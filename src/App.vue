@@ -119,7 +119,7 @@ watch(activeService, (service) => {
         @click="activeService = 'event'"
       >
         <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-EVENTSERVICE<span> EVENTVERLEIH </span></span>
+        <span class="brand-name">KD-EVENTSERVICE<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
       </button>
       <button
         class="service-tab cad-tab"
@@ -190,11 +190,17 @@ watch(activeService, (service) => {
           :key="product.id"
           class="product-card"
         >
-          <div class="product-photo">
+          <a
+            class="product-photo"
+            :href="product.link"
+            target="_blank"
+            rel="noreferrer"
+            :aria-label="`${product.title} auf Kleinanzeigen ansehen`"
+          >
             <img :src="imageUrl(product.image)" :alt="product.imageAlt" loading="lazy" />
             <span class="product-number">{{ product.number }}</span>
             <span class="product-category">{{ product.category }}</span>
-          </div>
+          </a>
           <div class="product-content">
             <div class="product-title-row">
               <div>
