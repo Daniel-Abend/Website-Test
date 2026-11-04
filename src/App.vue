@@ -13,6 +13,7 @@ const products = [
     priceNote: 'inkl. Mikrofone',
     details: ['Leistungsstarke Musikbox & Mikrofone', 'Lichtanlage für Partybeleuchtung', 'Einfach zu bedienen'],
     extra: 'Einzelmiete der Geräte auf Anfrage.',
+    link: 'https://www.kleinanzeigen.de/s-anzeige/musikanlage-mikrofone-lichtanlage-bierzapfanlage-mieten/3522664283-233-17095'
   },
   {
     id: 'bierzapfanlage',
@@ -26,6 +27,7 @@ const products = [
     price: '50',
     priceNote: 'pro Tag',
     details: ['Für private Feiern & Events', 'Abholung in 49577 Ankum'],
+    link: 'https://www.kleinanzeigen.de/s-anzeige/musikanlage-mikrofone-lichtanlage-bierzapfanlage-mieten/3522664283-233-17095'
   },
   {
     id: 'kickautomat',
@@ -41,6 +43,7 @@ const products = [
     priceNote: 'Mo–Do pro Tag',
     weekend: 'Fr 120 € · Sa 120 € · So 120 € · Fr–So 250 €',
     details: ['Für Kinder & Erwachsene', 'Abholung nach Absprache', 'Lieferung gegen Aufpreis möglich'],
+    link: 'https://www.kleinanzeigen.de/s-anzeige/kickautomat-zur-huepfburg-geburtstag-firmenfeier-hochzeit-jga/3522649840-233-17095'
   },
   {
     id: 'boxautomat',
@@ -55,6 +58,7 @@ const products = [
     priceNote: 'Mo–Do pro Tag',
     weekend: 'Fr 100 € · Sa 100 € · So 100 € · Fr–So 250 €',
     details: ['Für Kinder & Erwachsene', 'Abholung nach Absprache', 'Lieferung gegen Aufpreis möglich'],
+    link: 'https://www.kleinanzeigen.de/s-anzeige/boxautomat-zu-vermieten-geburtstag-firmenfeier-hochzeit-jga/3522656963-233-17095'
   },
   {
     id: 'anhaenger',
@@ -68,6 +72,7 @@ const products = [
     price: '30',
     priceNote: 'pro Tag',
     details: ['Länge 306 cm', 'Breite 153 cm', 'Höhe 170 cm'],
+    link: 'https://www.kleinanzeigen.de/s-anzeige/anhaenger-mit-plane-zu-vermieten-306-153-170-cm/3538327034-238-17095'
   },
   {
     id: 'hau-den-lukas',
@@ -82,7 +87,8 @@ const products = [
     priceNote: 'Mo–Do pro Tag',
     weekend: 'Fr 100 € · Sa 100 € · So 100 € · Fr–So 250 €',
     details: ['Für Geburtstage, Hochzeiten & Vereinsfeste', 'Weitere Automaten zubuchbar', 'Mengenrabatt bei mehreren Automaten'],
-  },
+    link: 'https://www.kleinanzeigen.de/s-anzeige/hau-den-lukas-zur-huepfburg-geburtstag-firmenfeier-hochzeit-jga/3538322709-233-17095'
+  }
 ]
 
 const imageUrl = (file) => `${import.meta.env.BASE_URL}Product-Images/${file}`
@@ -165,7 +171,7 @@ const contactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=145
             </ul>
             <p v-if="product.weekend" class="weekend-prices">{{ product.weekend }}</p>
             <p v-if="product.extra" class="product-extra">{{ product.extra }}</p>
-            <a class="product-link" :href="contactUrl" target="_blank" rel="noreferrer">
+            <a class="product-link" :href="product.link" target="_blank" rel="noreferrer">
               Verfügbarkeit anfragen <span aria-hidden="true">↗</span>
             </a>
           </div>
