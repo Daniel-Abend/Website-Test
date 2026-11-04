@@ -380,7 +380,8 @@ watch(activeService, (service) => {
     <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
     <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
     <a href="#start">Zurück nach oben ↑</a>
-    <span class="copyright">© {{ new Date().getFullYear() }} KD-Service</span>
+    <span v-if="activeService === 'event'" class="copyright">© {{ new Date().getFullYear() }} KD-EVENTSERVICE</span>
+    <span v-else class="copyright">© {{ new Date().getFullYear() }} KD-SERVICE</span>
   </footer>
   </div>
 </template>
