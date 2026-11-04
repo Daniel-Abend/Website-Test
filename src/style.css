@@ -298,14 +298,33 @@ body { color: #e8e5de; background: #191a1c; }
   .contact-aside { background: #b89a5e; }
 }
 
+.site-header { gap: 24px; }
+.site-header > .service-switch { display: flex; align-items: center; gap: 10px; }
 .site-header nav { gap: 22px; }
-.service-switch { display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid #49453d; border-radius: 4px; background: #191a1c; }
-.service-tab { display: inline-flex; align-items: center; gap: 7px; min-height: 35px; padding: 5px 9px; border: 1px solid transparent; border-radius: 2px; color: #b9b5ad; background: transparent; font: 600 10px 'DM Sans', sans-serif; white-space: nowrap; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.service-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 6px 10px;
+  border: 1px solid #49453d;
+  border-radius: 3px;
+  color: #b9b5ad;
+  background: #191a1c;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
 .service-tab:hover { color: #fff; }
-.service-tab.active { color: #f0e9dc; border-color: #756341; background: #302b21; }
-.switch-mark { font: 700 14px 'Space Grotesk', sans-serif; letter-spacing: -1px; }
-.switch-mark span { color: #d3b474; }
-.service-tab img { width: 31px; height: 23px; object-fit: cover; object-position: center; border-radius: 2px; }
+.service-tab.active { color: #f0e9dc; border-color: #756341; background: #302b21; box-shadow: inset 0 -2px #c5a15b; }
+.service-tab .brand-mark { flex: 0 0 auto; font-size: 26px; }
+.service-tab .brand-name { font-size: 10px; text-align: left; }
+.service-tab .brand-name > span { margin-top: 4px; font-size: 7px; letter-spacing: 1.5px; }
+.event-tab .brand-mark > span { color: #d3b474; }
+.cad-tab .brand-mark > span { color: #9db8d9; }
+.cad-tab { border-color: #40516a; background: #182338; }
+.cad-tab.active { color: #e7eef8; border-color: #526782; background: #253348; box-shadow: inset 0 -2px #7896bc; }
 
 .site-shell.cad-mode {
   color: #1b293c;
@@ -319,12 +338,16 @@ body { color: #e8e5de; background: #191a1c; }
 .cad-mode .site-header { color: #f5f7fa; background: #101b2c; border-bottom-color: #2e3b4e; }
 .cad-mode .brand-name > span { color: #aab6c6; }
 .cad-mode .brand-mark > span, .cad-mode .switch-mark span { color: #b8cbe2; }
+.service-switch .event-tab .brand-mark > span { color: #d3b474; }
+.service-switch .cad-tab .brand-mark > span { color: #9db8d9; }
 .cad-mode .site-header nav { color: #d6dde7; }
 .cad-mode .site-header nav a:not(.nav-cta):hover { color: #b8cce4; }
-.cad-mode .service-switch { border-color: #455369; background: #17243a; }
 .cad-mode .service-tab { color: #bec8d7; }
+.cad-mode .event-tab { border-color: #49453d; background: #191a1c; }
+.cad-mode .cad-tab { border-color: #455369; background: #17243a; }
 .cad-mode .service-tab:hover { color: #fff; }
-.cad-mode .service-tab.active { color: #fff; border-color: #7084a0; background: #34445c; }
+.cad-mode .event-tab.active { color: #e8e2d5; border-color: #756341; background: #302b21; box-shadow: inset 0 -2px #c5a15b; }
+.cad-mode .cad-tab.active { color: #fff; border-color: #7084a0; background: #34445c; box-shadow: inset 0 -2px #94aecb; }
 .cad-mode .nav-cta { color: #122037; background: #dce5ef; }
 .cad-mode .nav-cta:hover, .cad-mode .button-primary:hover { background: #fff; }
 .cad-mode .hero { color: #f6f7f9; background: #132038; }
@@ -383,20 +406,21 @@ body { color: #e8e5de; background: #191a1c; }
   .site-header { padding-left: 4vw; padding-right: 4vw; }
   .site-header nav { gap: 12px; }
   .site-header nav > a:not(.nav-cta) { display: none; }
+  .site-header > .service-switch { gap: 5px; }
+  .service-tab { gap: 6px; padding-left: 7px; padding-right: 7px; }
+  .service-tab .brand-name { font-size: 9px; }
+  .service-tab .brand-name > span { font-size: 6px; letter-spacing: 1px; }
   .cad-service-grid { grid-template-columns: 1fr 1fr; }
   .cad-service-card:last-child { grid-column: 1 / -1; min-height: auto; }
 }
 @media (max-width: 620px) {
-  .site-header { height: auto; min-height: 70px; padding: 10px 15px; gap: 8px; }
-  .site-header .brand { gap: 6px; }
-  .site-header .brand-mark { font-size: 25px; }
-  .site-header .brand-name { font-size: 9px; }
-  .site-header .brand-name > span { font-size: 7px; letter-spacing: 1px; }
+  .site-header { height: auto; min-height: 70px; padding: 8px 10px; gap: 5px; }
+  .site-header > .service-switch { gap: 2px; }
   .site-header nav { gap: 0; }
-  .service-switch { gap: 2px; padding: 3px; }
-  .service-tab { gap: 4px; min-height: 32px; padding: 4px 5px; font-size: 8px; }
-  .switch-mark { font-size: 12px; }
-  .service-tab img { width: 23px; height: 19px; }
+  .service-tab { gap: 5px; min-height: 42px; padding: 4px 5px; }
+  .service-tab .brand-mark { font-size: 19px; }
+  .service-tab .brand-name { font-size: 7px; }
+  .service-tab .brand-name > span { max-width: 105px; font-size: 5px; letter-spacing: .55px; white-space: normal; }
   .site-header nav .nav-cta { display: none; }
   .cad-mode .cad-hero { min-height: 760px; }
   .cad-mode .cad-hero-art { top: 445px; }

@@ -110,33 +110,29 @@ watch(activeService, (service) => {
 <template>
   <div class="site-shell" :class="{ 'cad-mode': activeService === 'cad' }">
     <header class="site-header">
-    <a class="brand" href="#start" aria-label="KD-Service – zur Startseite">
-      <span class="brand-mark">KD<span>.</span></span>
-      <span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span>
-    </a>
+    <div class="service-switch" role="group" aria-label="KD-Service Bereich auswählen">
+      <button
+        class="service-tab event-tab"
+        :class="{ active: activeService === 'event' }"
+        type="button"
+        :aria-pressed="activeService === 'event'"
+        @click="activeService = 'event'"
+      >
+        <span class="brand-mark">KD<span>.</span></span>
+        <span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span>
+      </button>
+      <button
+        class="service-tab cad-tab"
+        :class="{ active: activeService === 'cad' }"
+        type="button"
+        :aria-pressed="activeService === 'cad'"
+        @click="activeService = 'cad'"
+      >
+        <span class="brand-mark">KD<span>.</span></span>
+        <span class="brand-name">KD-SERVICE<span>KONSTRUKTION · 3D-DRUCK</span></span>
+      </button>
+    </div>
     <nav aria-label="Hauptnavigation">
-      <div class="service-switch" role="group" aria-label="Service auswählen">
-        <button
-          class="service-tab event-tab"
-          :class="{ active: activeService === 'event' }"
-          type="button"
-          :aria-pressed="activeService === 'event'"
-          @click="activeService = 'event'"
-        >
-          <span class="switch-mark">KD<span>.</span></span>
-          <span>Eventservice</span>
-        </button>
-        <button
-          class="service-tab cad-tab"
-          :class="{ active: activeService === 'cad' }"
-          type="button"
-          :aria-pressed="activeService === 'cad'"
-          @click="activeService = 'cad'"
-        >
-          <img :src="imageUrl('76a791f3-9bc3-4c2b-9a71-4e0093cf7417.avif')" alt="" />
-          <span>CAD & 3D-Druck</span>
-        </button>
-      </div>
       <template v-if="activeService === 'event'">
         <a href="#angebote">Mietangebote</a>
         <a href="#ablauf">So funktioniert’s</a>
@@ -379,7 +375,7 @@ watch(activeService, (service) => {
   </main>
 
   <footer class="site-footer">
-    <a class="brand footer-brand" href="#start"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span></a>
+    <span class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span></span>
     <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
     <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
     <a href="#start">Zurück nach oben ↑</a>
