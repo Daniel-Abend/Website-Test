@@ -194,3 +194,106 @@ h1, h2, h3, p { margin-top: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+:root {
+  color: #e8e5de;
+  background: #191a1c;
+  --ink: #e8e5de;
+  --dark: #111214;
+  --green: #c5a15b;
+  --paper: #1b1c1e;
+  --muted: #a7a39a;
+}
+
+body { color: #e8e5de; background: #191a1c; }
+::selection { color: #111214; background: #c5a15b; }
+.site-header { background: #101113; border-bottom-color: #373431; }
+.brand-mark > span, .status-dot, .meta-icon, .text-link span, .product-link span { color: #d3b474; }
+.brand-name > span { color: #a5a198; }
+.site-header nav { color: #cbc7bf; }
+.site-header nav a:not(.nav-cta):hover, .text-link:hover { color: #e2c482; }
+.nav-cta { color: #171615; background: #c5a15b; }
+.nav-cta:hover, .button-primary:hover { background: #ddc38e; }
+.hero { background: #151618; }
+.hero .eyebrow { color: #c2b9a5; }
+.status-dot { background: #d5b674; box-shadow: 0 0 12px #c5a15b80; }
+.hero h1 span, h2 span { color: #d2b16f; }
+.hero-copy { color: #c0bdb6; }
+.button-primary { background: #c5a15b; color: #171615; }
+.text-link { color: #d5d0c6; }
+.hero-meta { color: #aaa69d; }
+.meta-divider { background: #504b42; }
+.hero-art {
+  top: 76px;
+  width: min(45vw, 490px);
+  height: 355px;
+  overflow: hidden;
+  border: 1px solid #b69a64;
+  background: #22211f;
+  box-shadow: 0 20px 70px #0008, 0 0 0 8px #c5a15b0d;
+}
+.hero-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero-photo-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 13px 15px;
+  color: #f0e9dc;
+  background: linear-gradient(transparent, #111214e8);
+  font: 600 8px 'Space Grotesk', sans-serif;
+  letter-spacing: 1.7px;
+}
+.hero-photo-caption span { color: #ddbd77; }
+.hero-bottom { border-top-color: #45413a; color: #aaa397; }
+.offers { background: #1b1c1e; }
+.eyebrow { color: #c2a66f; }
+.section-heading h2 span, .how h2 span { color: #d2b16f; }
+.section-intro { color: #b0aca4; }
+.product-card { background: #252628; border-color: #3b3a37; }
+.product-card:hover { box-shadow: 0 14px 35px #0005; }
+.product-photo { background: #2a2926; }
+.product-number { background: #c5a15b; color: #171615; }
+.product-category { background: #171719e8; color: #e8e2d5; border: 1px solid #b69a6455; }
+.product-title-row h3, .step h3 { color: #e9e5dd; }
+.product-subtitle { color: #aaa49a; }
+.price strong { color: #e2c481; }
+.price span, .product-description, .offer-note { color: #b2aea6; }
+.product-details { border-top-color: #41403c; }
+.product-details li { color: #d0cbc1; }
+.product-details li span { color: #d2b16f; }
+.weekend-prices { background: #32302c; color: #e0d6c3; }
+.product-extra { color: #d8d0c1; }
+.product-link { border-top-color: #41403c; color: #e1c47f; }
+.occasion { background: #292a2c; border-top: 1px solid #41403e; border-bottom: 1px solid #41403e; }
+.occasion h2 span { color: #d2b16f; }
+.occasion-content > p { color: #d0cbc2; }
+.occasion-tags span { border-color: #5a554a; color: #ddd6c9; }
+.occasion-spark { color: #c5a15b17; }
+.how { background: #1b1c1e; }
+.step { border-top-color: #484640; }
+.step-number { color: #d1b16e; }
+.step p { color: #b2aea6; }
+.contact { color: #ece7dc; background: linear-gradient(120deg, #aa8b50, #d1b575 52%, #ad8d50); }
+.contact .eyebrow { color: #3e3524; }
+.contact h2 span { color: #44351e; }
+.contact-copy > p:not(.eyebrow) { color: #393329; }
+.button-dark { background: #171719; color: #f0ede6; }
+.button-dark:hover { background: #30302e; }
+.contact-aside { background: #b89a5e; border: 1px solid #e0c789; }
+.contact-star { color: #8b6e39; }
+.contact-aside p { color: #4a3c27; }
+.contact-aside p strong, .contact-pin { color: #211d17; }
+.site-footer { color: #aaa69d; background: #101113; border-top: 1px solid #393630; }
+.site-footer > a:not(.brand):hover { color: #e1c47f; }
+.copyright { border-left-color: #49453d; }
+
+@media (max-width: 900px) {
+  .hero-art { right: -25px; transform: none; }
+}
+@media (max-width: 620px) {
+  .hero { min-height: 760px; background: #151618; }
+  .hero-art { top: 445px; right: 20px; width: calc(100% - 40px); height: 240px; transform: none; }
+  .hero-bottom { border-top-color: #45413a; }
+  .contact-aside { background: #b89a5e; }
+}

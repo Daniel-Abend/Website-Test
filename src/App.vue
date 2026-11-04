@@ -121,12 +121,12 @@ const contactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=145
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <div class="art-glow"></div>
-        <div class="art-circle art-circle-back"></div>
-        <div class="art-circle art-circle-front"></div>
-        <div class="art-cross">✳</div>
-        <div class="art-label"><span>GUTE ZEITEN</span><strong>inklusive.</strong></div>
-        <div class="art-ticket"><span>01 — 06</span><strong>Finde dein<br />Event-Extra.</strong><span class="ticket-arrow">↘</span></div>
+        <img
+          class="hero-photo"
+          :src="imageUrl('0294326f-6b58-4165-a352-08ef9a07de8f.avif')"
+          alt=""
+        />
+        <span class="hero-photo-caption">KD-SERVICE <span>·</span> EVENTVERLEIH IN ANKUM</span>
       </div>
       <div class="hero-bottom"><span>GEBURTSTAG · HOCHZEIT · FIRMENFEIER · MEHR</span><span>SCROLLEN & ENTDECKEN ↓</span></div>
     </section>
