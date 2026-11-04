@@ -1,6 +1,7 @@
-# KD-Eventservice
+# KD-Service
 
-Eine responsive, einseitige Vue-Website für den Eventverleih in Ankum.
+Eine responsive Vue-Website mit umschaltbaren Bereichen für Eventverleih sowie
+CAD-Konstruktion und 3D-Druck.
 
 ## Lokal starten
 
@@ -25,6 +26,5 @@ Der Workflow unter `.github/workflows/deploy.yml` baut und veröffentlicht bei
 jedem Push auf `main`. In den Repository-Einstellungen unter **Pages** muss als
 Build-Quelle **GitHub Actions** ausgewählt sein.
 
-Vor dem Veröffentlichen in `src/App.vue` die `contactUrl` auf das eigene
-Kleinanzeigen-Profil oder eine konkrete Anzeige ändern. Aktuell führt der Link
-zur Kleinanzeigen-Startseite.
+Die Kontaktlinks für Eventservice und CAD/3D-Druck sind separat in `src/App.vue`
+hinterlegt.

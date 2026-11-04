@@ -1,4 +1,8 @@
 <script setup>
+import { ref, watch } from 'vue'
+
+const activeService = ref('event')
+
 const products = [
   {
     id: 'sound-licht',
@@ -93,22 +97,60 @@ const products = [
 
 const imageUrl = (file) => `${import.meta.env.BASE_URL}Product-Images/${file}`
 const contactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=145416712'
+const cadContactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=167343434'
+
+watch(activeService, (service) => {
+  document.title = service === 'cad'
+    ? 'KD-Service | CAD-Konstruktion & 3D-Druck'
+    : 'KD-Service | Eventverleih'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+})
 </script>
 
 <template>
-  <header class="site-header">
-    <a class="brand" href="#start" aria-label="KD-Eventservice – zur Startseite">
+  <div class="site-shell" :class="{ 'cad-mode': activeService === 'cad' }">
+    <header class="site-header">
+    <a class="brand" href="#start" aria-label="KD-Service – zur Startseite">
       <span class="brand-mark">KD<span>.</span></span>
-      <span class="brand-name">EVENT<span>SERVICE</span></span>
+      <span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span>
     </a>
     <nav aria-label="Hauptnavigation">
-      <a href="#angebote">Mietangebote</a>
-      <a href="#ablauf">So funktioniert’s</a>
-      <a class="nav-cta" :href="contactUrl" target="_blank" rel="noreferrer">Anfrage stellen <span aria-hidden="true">↗</span></a>
+      <div class="service-switch" role="group" aria-label="Service auswählen">
+        <button
+          class="service-tab event-tab"
+          :class="{ active: activeService === 'event' }"
+          type="button"
+          :aria-pressed="activeService === 'event'"
+          @click="activeService = 'event'"
+        >
+          <span class="switch-mark">KD<span>.</span></span>
+          <span>Eventservice</span>
+        </button>
+        <button
+          class="service-tab cad-tab"
+          :class="{ active: activeService === 'cad' }"
+          type="button"
+          :aria-pressed="activeService === 'cad'"
+          @click="activeService = 'cad'"
+        >
+          <img :src="imageUrl('76a791f3-9bc3-4c2b-9a71-4e0093cf7417.avif')" alt="" />
+          <span>CAD & 3D-Druck</span>
+        </button>
+      </div>
+      <template v-if="activeService === 'event'">
+        <a href="#angebote">Mietangebote</a>
+        <a href="#ablauf">So funktioniert’s</a>
+        <a class="nav-cta" :href="contactUrl" target="_blank" rel="noreferrer">Anfrage stellen <span aria-hidden="true">↗</span></a>
+      </template>
+      <template v-else>
+        <a href="#cad-leistungen">Leistungen</a>
+        <a href="#cad-ablauf">Projektablauf</a>
+        <a class="nav-cta" :href="cadContactUrl" target="_blank" rel="noreferrer">Projekt anfragen <span aria-hidden="true">↗</span></a>
+      </template>
     </nav>
-  </header>
+    </header>
 
-  <main>
+  <main v-if="activeService === 'event'">
     <section id="start" class="hero">
       <div class="hero-content">
         <p class="eyebrow"><span class="status-dot"></span> EVENTVERLEIH AUS ANKUM</p>
@@ -220,10 +262,128 @@ const contactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=145
     </section>
   </main>
 
+  <main v-else class="cad-main">
+    <section id="start" class="hero cad-hero">
+      <div class="hero-content">
+        <p class="eyebrow"><span class="status-dot"></span> KONSTRUKTION · CAD · 3D-DRUCK</p>
+        <h1>Aus einer Idee<br />wird <span>ein Bauteil.</span></h1>
+        <p class="hero-copy">
+          Technische Zeichnungen, durchdachte CAD-Konstruktionen und 3D-Druck – persönlich, präzise und deutschlandweit digital.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#cad-leistungen">Leistungen entdecken <span aria-hidden="true">↓</span></a>
+          <a class="text-link" :href="cadContactUrl" target="_blank" rel="noreferrer">Projekt unverbindlich besprechen <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-meta">
+          <span><span class="meta-icon">⌖</span> Deutschlandweit digital</span>
+          <span class="meta-divider"></span>
+          <span>Faire Festpreise nach Projektbesprechung</span>
+        </div>
+      </div>
+      <div class="hero-art cad-hero-art">
+        <img
+          class="hero-photo"
+          :src="imageUrl('76a791f3-9bc3-4c2b-9a71-4e0093cf7417.avif')"
+          alt="KD-Service: technische Zeichnungen, CAD-Konstruktion und 3D-Druck"
+        />
+        <span class="hero-photo-caption">KD-SERVICE <span>·</span> KONSTRUKTION & 3D-DRUCK</span>
+      </div>
+      <div class="hero-bottom"><span>2D & 3D · TECHNISCHE ZEICHNUNGEN · 3D-DRUCK</span><span>VON DER SKIZZE ZUM MODELL</span></div>
+    </section>
+
+    <section id="cad-leistungen" class="offers section-wrap cad-offers">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">KONSTRUKTION, DIE WEITERDENKT</p>
+          <h2>Von der Skizze bis<br />zum <span>fertigen Modell.</span></h2>
+        </div>
+        <p class="section-intro">Ob einzelne Anpassung oder vollständige Ausarbeitung – ich unterstütze Privatpersonen, Handwerk und Unternehmen bei ihrem Konstruktionsprojekt.</p>
+      </div>
+      <div class="cad-service-grid">
+        <article class="cad-service-card">
+          <span class="cad-service-number">01</span>
+          <h3>CAD & Konstruktion</h3>
+          <ul>
+            <li>2D- und 3D-Konstruktionen</li>
+            <li>Individuelle Bauteile und Sonderlösungen</li>
+            <li>Stahlbau-, Blech- und Maschinenbaukonstruktionen</li>
+            <li>Konstruktion von Dreh- und Frästeilen</li>
+            <li>Entwicklung nicht mehr erhältlicher Ersatzteile</li>
+            <li>Änderung und Optimierung vorhandener CAD-Dateien</li>
+          </ul>
+        </article>
+        <article class="cad-service-card">
+          <span class="cad-service-number">02</span>
+          <h3>Zeichnungen & Fertigung</h3>
+          <ul>
+            <li>Technische Zeichnungen und Fertigungszeichnungen</li>
+            <li>Schweißzeichnungen und Schweißbaugruppen</li>
+            <li>Blechabwicklungen für Laser- und Kantteile</li>
+            <li>Baugruppen, Stücklisten und Montagezeichnungen</li>
+            <li>Digitalisierung von Skizzen und alten Zeichnungen</li>
+            <li>Vermessung und Nachkonstruktion vorhandener Bauteile</li>
+          </ul>
+        </article>
+        <article class="cad-service-card">
+          <span class="cad-service-number">03</span>
+          <h3>Dateien & 3D-Druck</h3>
+          <ul>
+            <li>STEP / STP</li>
+            <li>STL und 3MF</li>
+            <li>DXF für Laser- und Kantteile</li>
+            <li>Weitere Formate nach Absprache</li>
+            <li>3D-Druck von Prototypen und Ersatzteilen</li>
+            <li>Kleinserien nach Projektabsprache</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="cad-experience">
+      <div class="cad-experience-inner">
+        <div>
+          <p class="eyebrow">PRAXISNAHES ENGINEERING</p>
+          <h2>Technik verstehen.<br /><span>Lösungen gestalten.</span></h2>
+        </div>
+        <div class="cad-experience-copy">
+          <p>Erfahrung aus Maschinenbau, Sonderfahrzeugbau, Stahlbau und Landtechnik fließt in jedes Projekt ein – für Lösungen, die nicht nur auf dem Bildschirm funktionieren.</p>
+          <div class="cad-tags"><span>Maschinenbau</span><span>Sonderfahrzeugbau</span><span>Stahlbau</span><span>Landtechnik</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cad-ablauf" class="how section-wrap cad-how">
+      <div class="section-heading">
+        <div><p class="eyebrow">EINFACH & TRANSPARENT</p><h2>Dein Projekt.<br />Drei klare <span>Schritte.</span></h2></div>
+      </div>
+      <div class="steps">
+        <article class="step"><span class="step-number">01</span><h3>Idee teilen</h3><p>Melde dich mit deiner Idee, Skizze, Zeichnung oder vorhandenen Datei – auch ein erstes Gespräch ist unverbindlich.</p></article>
+        <article class="step"><span class="step-number">02</span><h3>Lösung abstimmen</h3><p>Wir besprechen Anforderungen, gewünschte Ergebnisse und den passenden Leistungsumfang. Du erhältst einen fairen Festpreis vorab.</p></article>
+        <article class="step"><span class="step-number">03</span><h3>Ergebnis erhalten</h3><p>Die Zusammenarbeit läuft deutschlandweit digital. Aufmaße vor Ort oder die Zusendung von Bauteilen sind nach Absprache möglich.</p></article>
+      </div>
+    </section>
+
+    <section class="contact cad-contact">
+      <div class="contact-copy">
+        <p class="eyebrow">DEINE IDEE IST DER ANFANG</p>
+        <h2>Was möchtest<br />du <span>konstruieren?</span></h2>
+        <p>Schick mir deine Skizze, Zeichnung oder vorhandene Datei. Gemeinsam finden wir die passende Lösung.</p>
+        <a class="button button-dark" :href="cadContactUrl" target="_blank" rel="noreferrer">CAD-Projekt anfragen <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="contact-aside cad-contact-aside">
+        <span class="contact-star" aria-hidden="true">⌘</span>
+        <p>KD-SERVICE<br /><strong>KONSTRUKTION & 3D-DRUCK</strong></p>
+        <span class="contact-pin">Deutschlandweit digital</span>
+      </div>
+    </section>
+  </main>
+
   <footer class="site-footer">
-    <a class="brand footer-brand" href="#start"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">EVENT<span>SERVICE</span></span></a>
-    <p>Eventverleih für unvergessliche Feiern.</p>
+    <a class="brand footer-brand" href="#start"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span></a>
+    <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
+    <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
     <a href="#start">Zurück nach oben ↑</a>
-    <span class="copyright">© {{ new Date().getFullYear() }} KD-Eventservice</span>
+    <span class="copyright">© {{ new Date().getFullYear() }} KD-Service</span>
   </footer>
+  </div>
 </template>
