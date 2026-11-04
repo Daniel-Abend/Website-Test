@@ -119,7 +119,7 @@ watch(activeService, (service) => {
         @click="activeService = 'event'"
       >
         <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span>
+        <span class="brand-name">KD-EVENTSERVICE<span> EVENTVERLEIH </span></span>
       </button>
       <button
         class="service-tab cad-tab"
@@ -129,7 +129,7 @@ watch(activeService, (service) => {
         @click="activeService = 'cad'"
       >
         <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-SERVICE<span>KONSTRUKTION · 3D-DRUCK</span></span>
+        <span class="brand-name">KD-SERVICE<span> CAD-KONSTRUKTION · 3D-DRUCK</span></span>
       </button>
     </div>
     <nav aria-label="Hauptnavigation">
