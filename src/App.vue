@@ -97,12 +97,12 @@ const products = [
 
 const imageUrl = (file) => `${import.meta.env.BASE_URL}Product-Images/${file}`
 const contactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=145416712'
-const cadContactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=167343434'
+const cadContactUrl = 'https://www.kleinanzeigen.de/s-anzeige/cad-dienstleistung-technische-zeichnungen-3d-druck-dxf-step-stl/3538712058-298-17095'
 
 watch(activeService, (service) => {
   document.title = service === 'cad'
     ? 'KD-Service | CAD-Konstruktion & 3D-Druck'
-    : 'KD-Service | Eventverleih'
+    : 'KD-Eventservice | Eventverleih'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 </script>
