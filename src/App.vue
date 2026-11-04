@@ -170,7 +170,7 @@ watch(activeService, (service) => {
           :src="imageUrl('0294326f-6b58-4165-a352-08ef9a07de8f.avif')"
           alt=""
         />
-        <span class="hero-photo-caption">KD-SERVICE <span>·</span> EVENTVERLEIH IN ANKUM</span>
+        <span class="hero-photo-caption">KD-EVENTSERVICE <span>·</span> EVENTVERLEIH IN ANKUM</span>
       </div>
       <div class="hero-bottom"><span>GEBURTSTAG · HOCHZEIT · FIRMENFEIER · MEHR</span><span>SCROLLEN & ENTDECKEN ↓</span></div>
     </section>
@@ -375,7 +375,8 @@ watch(activeService, (service) => {
   </main>
 
   <footer class="site-footer">
-    <span class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span>KONSTRUKTION · EVENTVERLEIH</span></span></span>
+    <span v-if="activeService === 'event'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-EVENTSERVICE<span> EVENTVERLEIH </span></span></span>
+    <span v-else class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> KONSTRUKTION · 3D-DRUCK</span></span></span>
     <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
     <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
     <a href="#start">Zurück nach oben ↑</a>
