@@ -97,7 +97,7 @@ const products = [
 
 const imageUrl = (file) => `${import.meta.env.BASE_URL}Product-Images/${file}`
 const contactUrl = 'https://www.kleinanzeigen.de/s-bestandsliste.html?userId=145416712'
-const cadContactUrl = 'https://www.kleinanzeigen.de/s-anzeige/cad-dienstleistung-technische-zeichnungen-3d-druck-dxf-step-stl/3538712058-298-17095'
+const cadContactUrl = 'https://www.kleinanzeigen.de/s-anzeige/cad-kontruktion-3d-druck-technische-zeichnungen-dxf-step-pdf/3568950752-298-17095'
 
 watch(activeService, (service) => {
   document.title = service === 'cad'
@@ -119,7 +119,7 @@ watch(activeService, (service) => {
         @click="activeService = 'event'"
       >
         <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-Service<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
+        <span class="brand-name">KD-SERVICE<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
       </button>
       <button
         class="service-tab cad-tab"
@@ -381,7 +381,7 @@ watch(activeService, (service) => {
   </main>
 
   <footer class="site-footer">
-    <span v-if="activeService === 'event'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-Service<span> EVENTVERLEIH </span></span></span>
+    <span v-if="activeService === 'event'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> EVENTVERLEIH </span></span></span>
     <span v-else class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> KONSTRUKTION · 3D-DRUCK</span></span></span>
     <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
     <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
