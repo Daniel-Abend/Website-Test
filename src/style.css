@@ -229,7 +229,7 @@ body { color: #e8e5de; background: #191a1c; }
 .hero-art {
   top: 76px;
   width: min(45vw, 490px);
-  height: 355px;
+  height: clamp(320px, 35vw, 420px);
   overflow: hidden;
   border: 1px solid #b69a64;
   background: #22211f;
@@ -296,7 +296,7 @@ body { color: #e8e5de; background: #191a1c; }
 }
 @media (max-width: 620px) {
   .hero { min-height: 760px; background: #151618; }
-  .hero-art { position: relative; top: auto; right: auto; width: 100%; height: 240px; margin-top: 32px; transform: none; }
+  .hero-art { position: relative; top: auto; right: auto; width: 100%; height: 320px; margin-top: 32px; transform: none; }
   .hero-bottom { border-top-color: #45413a; }
   .contact-aside { background: #b89a5e; }
 }
