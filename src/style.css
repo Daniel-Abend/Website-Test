@@ -426,7 +426,6 @@ body { color: #e8e5de; background: #191a1c; }
   .service-tab .brand-name > span { max-width: 105px; font-size: 5px; letter-spacing: .55px; white-space: normal; }
   .site-header nav .nav-cta { display: none; }
   .cad-mode .cad-hero { min-height: 760px; }
-  .cad-mode .cad-hero-art { top: 445px; }
   .cad-service-grid { grid-template-columns: 1fr; }
   .cad-service-card, .cad-service-card:last-child { grid-column: auto; min-height: auto; }
   .cad-experience { padding: 57px 22px; }
