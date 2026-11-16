@@ -178,7 +178,7 @@ h1, h2, h3, p { margin-top: 0; }
   .section-intro { margin-top: 15px; }
   .product-grid { grid-template-columns: 1fr; gap: 15px; }
   .product-card { grid-column: auto; }
-  .product-photo { height: 210px; }
+  .product-photo { height: 500px; }
   .product-content { padding: 18px; }
   .product-description { min-height: auto; }
   .occasion { grid-template-columns: 1fr; gap: 24px; padding: 57px 22px; }
@@ -296,7 +296,7 @@ body { color: #e8e5de; background: #191a1c; }
 }
 @media (max-width: 620px) {
   .hero { min-height: 760px; background: #151618; }
-  .hero-art { top: 445px; right: 20px; width: calc(100% - 40px); height: 240px; transform: none; }
+  .hero-art { position: relative; top: auto; right: auto; width: 100%; height: 240px; margin-top: 32px; transform: none; }
   .hero-bottom { border-top-color: #45413a; }
   .contact-aside { background: #b89a5e; }
 }

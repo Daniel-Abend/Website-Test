@@ -26,5 +26,5 @@ Der Workflow unter `.github/workflows/deploy.yml` baut und veröffentlicht bei
 jedem Push auf `main`. In den Repository-Einstellungen unter **Pages** muss als
 Build-Quelle **GitHub Actions** ausgewählt sein.
 
-Die Kontaktlinks für Eventservice und CAD/3D-Druck sind separat in `src/App.vue`
+Die Kontaktlinks für Service und CAD/3D-Druck sind separat in `src/App.vue`
 hinterlegt.

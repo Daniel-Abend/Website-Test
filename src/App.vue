@@ -102,7 +102,7 @@ const cadContactUrl = 'https://www.kleinanzeigen.de/s-anzeige/cad-dienstleistung
 watch(activeService, (service) => {
   document.title = service === 'cad'
     ? 'KD-Service | CAD-Konstruktion & 3D-Druck'
-    : 'KD-Eventservice | Eventverleih'
+    : 'KD-Service | Eventverleih'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 </script>
@@ -119,7 +119,7 @@ watch(activeService, (service) => {
         @click="activeService = 'event'"
       >
         <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-EVENTSERVICE<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
+        <span class="brand-name">KD-Service<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
       </button>
       <button
         class="service-tab cad-tab"
@@ -170,7 +170,7 @@ watch(activeService, (service) => {
           :src="imageUrl('0294326f-6b58-4165-a352-08ef9a07de8f.avif')"
           alt=""
         />
-        <span class="hero-photo-caption">KD-EVENTSERVICE <span>·</span> EVENTVERLEIH IN ANKUM</span>
+        <span class="hero-photo-caption">KD-Service <span>·</span> EVENTVERLEIH IN ANKUM</span>
       </div>
       <div class="hero-bottom"><span>GEBURTSTAG · HOCHZEIT · FIRMENFEIER · MEHR</span><span>SCROLLEN & ENTDECKEN ↓</span></div>
     </section>
@@ -381,12 +381,12 @@ watch(activeService, (service) => {
   </main>
 
   <footer class="site-footer">
-    <span v-if="activeService === 'event'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-EVENTSERVICE<span> EVENTVERLEIH </span></span></span>
+    <span v-if="activeService === 'event'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-Service<span> EVENTVERLEIH </span></span></span>
     <span v-else class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> KONSTRUKTION · 3D-DRUCK</span></span></span>
     <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
     <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
     <a href="#start">Zurück nach oben ↑</a>
-    <span v-if="activeService === 'event'" class="copyright">© {{ new Date().getFullYear() }} KD-EVENTSERVICE</span>
+    <span v-if="activeService === 'event'" class="copyright">© {{ new Date().getFullYear() }} KD-Service</span>
     <span v-else class="copyright">© {{ new Date().getFullYear() }} KD-SERVICE</span>
   </footer>
   </div>
