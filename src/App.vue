@@ -1,7 +1,54 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
-const activeService = ref('event')
+const VALID_SERVICES = ['cad', 'event']
+
+const getServiceFromUrl = () => {
+  const params = new URLSearchParams(window.location.search)
+  const tab = params.get('tab')
+  if (VALID_SERVICES.includes(tab)) {
+    return tab
+  }
+  const hash = window.location.hash.replace('#', '')
+  if (VALID_SERVICES.includes(hash)) {
+    return hash
+  }
+  return 'cad'
+}
+
+const activeService = ref(getServiceFromUrl())
+
+const updateUrl = (service) => {
+  const url = new URL(window.location.href)
+  url.searchParams.set('tab', service)
+  window.history.replaceState({}, '', url)
+}
+
+const syncFromHistory = () => {
+  const service = getServiceFromUrl()
+  if (activeService.value !== service) {
+    activeService.value = service
+  }
+}
+
+const setService = (service) => {
+  activeService.value = service
+  const url = new URL(window.location.href)
+  url.searchParams.set('tab', service)
+  window.history.pushState({}, '', url)
+}
+
+onMounted(() => {
+  updateUrl(activeService.value)
+  document.title = activeService.value === 'cad'
+    ? 'KD-Service | CAD-Konstruktion & 3D-Druck'
+    : 'KD-Service | Eventverleih'
+  window.addEventListener('popstate', syncFromHistory)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('popstate', syncFromHistory)
+})
 
 const products = [
   {
@@ -110,284 +157,324 @@ watch(activeService, (service) => {
 <template>
   <div class="site-shell" :class="{ 'cad-mode': activeService === 'cad' }">
     <header class="site-header">
-    <div class="service-switch" role="group" aria-label="KD-Service Bereich auswählen">
-      <button
-        class="service-tab event-tab"
-        :class="{ active: activeService === 'event' }"
-        type="button"
-        :aria-pressed="activeService === 'event'"
-        @click="activeService = 'event'"
-      >
-        <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-SERVICE<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
-      </button>
-      <button
-        class="service-tab cad-tab"
-        :class="{ active: activeService === 'cad' }"
-        type="button"
-        :aria-pressed="activeService === 'cad'"
-        @click="activeService = 'cad'"
-      >
-        <span class="brand-mark">KD<span>.</span></span>
-        <span class="brand-name">KD-SERVICE<span> CAD-KONSTRUKTION · 3D-DRUCK</span></span>
-      </button>
-    </div>
-    <nav aria-label="Hauptnavigation">
-      <template v-if="activeService === 'event'">
-        <a href="#angebote">Mietangebote</a>
-        <a href="#ablauf">So funktioniert’s</a>
-        <a class="nav-cta" :href="contactUrl" target="_blank" rel="noreferrer">Anfrage stellen <span aria-hidden="true">↗</span></a>
-      </template>
-      <template v-else>
-        <a href="#cad-leistungen">Leistungen</a>
-        <a href="#cad-ablauf">Projektablauf</a>
-        <a class="nav-cta" :href="cadContactUrl" target="_blank" rel="noreferrer">Projekt anfragen <span aria-hidden="true">↗</span></a>
-      </template>
-    </nav>
+      <div class="service-switch" role="group" aria-label="KD-Service Bereich auswählen">
+        <button
+          class="service-tab cad-tab"
+          :class="{ active: activeService === 'cad' }"
+          type="button"
+          :aria-pressed="activeService === 'cad'"
+          @click="setService('cad')"
+        >
+          <span class="brand-mark">KD<span>.</span></span>
+          <span class="brand-name">KD-SERVICE<span> CAD-KONSTRUKTION · 3D-DRUCK</span></span>
+        </button>
+        <button
+          class="service-tab event-tab"
+          :class="{ active: activeService === 'event' }"
+          type="button"
+          :aria-pressed="activeService === 'event'"
+          @click="setService('event')"
+        >
+          <span class="brand-mark">KD<span>.</span></span>
+          <span class="brand-name">KD-SERVICE<span> EVENTVERLEIH FÜR IHRE FEIER </span></span>
+        </button>
+      </div>
+      <nav aria-label="Hauptnavigation">
+        <template v-if="activeService === 'cad'">
+          <a href="#cad-leistungen">Leistungen</a>
+          <a href="#cad-ablauf">Projektablauf</a>
+          <a class="nav-cta" :href="cadContactUrl" target="_blank" rel="noreferrer">Projekt anfragen <span aria-hidden="true">↗</span></a>
+        </template>
+        <template v-else>
+          <a href="#angebote">Mietangebote</a>
+          <a href="#ablauf">So funktioniert’s</a>
+          <a class="nav-cta" :href="contactUrl" target="_blank" rel="noreferrer">Anfrage stellen <span aria-hidden="true">↗</span></a>
+        </template>
+      </nav>
     </header>
 
-  <main v-if="activeService === 'event'">
-    <section id="start" class="hero">
-      <div class="hero-content">
-        <p class="eyebrow"><span class="status-dot"></span> EVENTVERLEIH AUS ANKUM</p>
-        <h1>Dein Event.<br />Dein <span>Highlight.</span></h1>
-        <p class="hero-copy">
-          Von sattem Sound bis zum Kick am Automaten – miete unkompliziert das Extra, das deine Feier unvergesslich macht.
-        </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#angebote">Angebote entdecken <span aria-hidden="true">↓</span></a>
-          <a class="text-link" :href="contactUrl" target="_blank" rel="noreferrer">Jetzt unverbindlich anfragen <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="hero-meta">
-          <span><span class="meta-icon">⌖</span> 49577 Ankum</span>
-          <span class="meta-divider"></span>
-          <span>Abholung oder Lieferung nach Absprache</span>
-        </div>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <img
-          class="hero-photo"
-          :src="imageUrl('0294326f-6b58-4165-a352-08ef9a07de8f.avif')"
-          alt=""
-        />
-        <span class="hero-photo-caption">KD-Service <span>·</span> EVENTVERLEIH IN ANKUM</span>
-      </div>
-      <div class="hero-bottom"><span>GEBURTSTAG · HOCHZEIT · FIRMENFEIER · MEHR</span><span>SCROLLEN & ENTDECKEN ↓</span></div>
-    </section>
-
-    <section id="angebote" class="offers section-wrap">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">MACH DEIN EVENT BESONDERS</p>
-          <h2>Das kannst du <span>mieten.</span></h2>
-        </div>
-        <p class="section-intro">Für kleine Runden und große Feiern. Such dir dein Highlight aus – den Rest besprechen wir persönlich.</p>
-      </div>
-
-      <div class="product-grid">
-        <article
-          v-for="product in products"
-          :key="product.id"
-          class="product-card"
-        >
-          <a
-            class="product-photo"
-            :href="product.link"
-            target="_blank"
-            rel="noreferrer"
-            :aria-label="`${product.title} auf Kleinanzeigen ansehen`"
-          >
-            <img :src="imageUrl(product.image)" :alt="product.imageAlt" loading="lazy" />
-            <span class="product-number">{{ product.number }}</span>
-            <span class="product-category">{{ product.category }}</span>
-          </a>
-          <div class="product-content">
-            <div class="product-title-row">
-              <div>
-                <h3>{{ product.title }}</h3>
-                <p v-if="product.subtitle" class="product-subtitle">{{ product.subtitle }}</p>
-              </div>
-              <div class="price"><strong>{{ product.price }} €</strong><span>{{ product.priceNote }}</span></div>
-            </div>
-            <p class="product-description">{{ product.description }}</p>
-            <ul class="product-details">
-              <li v-for="detail in product.details" :key="detail"><span aria-hidden="true">✓</span>{{ detail }}</li>
-            </ul>
-            <p v-if="product.weekend" class="weekend-prices">{{ product.weekend }}</p>
-            <p v-if="product.extra" class="product-extra">{{ product.extra }}</p>
-            <a class="product-link" :href="product.link" target="_blank" rel="noreferrer">
-              Verfügbarkeit anfragen <span aria-hidden="true">↗</span>
-            </a>
+    <main v-if="activeService === 'cad'" class="cad-main">
+      <section id="start" class="hero cad-hero">
+        <div class="hero-content">
+          <p class="eyebrow"><span class="status-dot"></span> KONSTRUKTION · CAD · 3D-DRUCK</p>
+          <h1>Aus einer Idee<br />wird <span>ein Bauteil.</span></h1>
+          <p class="hero-copy">
+            Technische Zeichnungen, durchdachte CAD-Konstruktionen und 3D-Druck – persönlich, präzise und deutschlandweit digital.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#cad-leistungen">Leistungen entdecken <span aria-hidden="true">↓</span></a>
+            <a class="text-link" :href="cadContactUrl" target="_blank" rel="noreferrer">Projekt unverbindlich besprechen <span aria-hidden="true">↗</span></a>
           </div>
-        </article>
-      </div>
-      <p class="offer-note">Automatenpreise gelten pro Tag, sofern nicht anders angegeben. Veranstaltungstechnik auch einzeln mietbar – Einzelpreise auf Anfrage.</p>
-    </section>
-
-    <section class="occasion">
-      <div class="occasion-copy">
-        <p class="eyebrow">VON DER IDEE BIS ZUM EVENT</p>
-        <h2>Gute Feiern<br />bleiben <span>im Kopf.</span></h2>
-      </div>
-      <div class="occasion-content">
-        <p>Geburtstag, Hochzeit, JGA, Gartenparty, Schützenfest oder Firmenfeier – mit dem passenden Equipment wird aus einem schönen Tag ein echtes Erlebnis.</p>
-        <div class="occasion-tags">
-          <span>Geburtstage</span><span>Hochzeiten</span><span>JGA</span><span>Firmenfeiern</span><span>Vereinsfeste</span><span>… und mehr</span>
+          <div class="hero-meta">
+            <span><span class="meta-icon">⌖</span> Deutschlandweit digital</span>
+            <span class="meta-divider"></span>
+            <span>Faire Festpreise nach Projektbesprechung</span>
+          </div>
         </div>
-      </div>
-      <span class="occasion-spark" aria-hidden="true">✳</span>
-    </section>
-
-    <section id="ablauf" class="how section-wrap">
-      <div class="section-heading">
-        <div><p class="eyebrow">GANZ OHNE KOMPLIZIERT</p><h2>In drei Schritten<br />zum <span>Highlight.</span></h2></div>
-      </div>
-      <div class="steps">
-        <article class="step"><span class="step-number">01</span><h3>Wunschartikel wählen</h3><p>Entdecke das passende Extra für deine Feier – einzelne Artikel oder gleich mehrere Automaten.</p></article>
-        <article class="step"><span class="step-number">02</span><h3>Termin anfragen</h3><p>Schreib uns über Kleinanzeigen mit deinem Datum und was du mieten möchtest.</p></article>
-        <article class="step"><span class="step-number">03</span><h3>Feier genießen</h3><p>Abholung in Ankum oder Lieferung nach Absprache und Entfernung – dann kann gefeiert werden.</p></article>
-      </div>
-    </section>
-
-    <section class="contact">
-      <div class="contact-copy">
-        <p class="eyebrow">DEIN TERMIN WARTET SCHON</p>
-        <h2>Bereit für<br />dein <span>Highlight?</span></h2>
-        <p>Frag deinen Wunschtermin ganz unverbindlich an. Wir freuen uns auf deine Nachricht!</p>
-        <a class="button button-dark" :href="contactUrl" target="_blank" rel="noreferrer">Nachricht über Kleinanzeigen <span aria-hidden="true">↗</span></a>
-      </div>
-      <div class="contact-aside">
-        <span class="contact-star" aria-hidden="true">✳</span>
-        <p>DEIN EVENTVERLEIH<br /><strong>IN ANKUM & UMGEBUNG</strong></p>
-        <span class="contact-pin">⌖ &nbsp;49577 Ankum</span>
-      </div>
-    </section>
-  </main>
-
-  <main v-else class="cad-main">
-    <section id="start" class="hero cad-hero">
-      <div class="hero-content">
-        <p class="eyebrow"><span class="status-dot"></span> KONSTRUKTION · CAD · 3D-DRUCK</p>
-        <h1>Aus einer Idee<br />wird <span>ein Bauteil.</span></h1>
-        <p class="hero-copy">
-          Technische Zeichnungen, durchdachte CAD-Konstruktionen und 3D-Druck – persönlich, präzise und deutschlandweit digital.
-        </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#cad-leistungen">Leistungen entdecken <span aria-hidden="true">↓</span></a>
-          <a class="text-link" :href="cadContactUrl" target="_blank" rel="noreferrer">Projekt unverbindlich besprechen <span aria-hidden="true">↗</span></a>
+        <div class="hero-art cad-hero-art">
+          <img
+            class="hero-photo"
+            :src="imageUrl('76a791f3-9bc3-4c2b-9a71-4e0093cf7417.avif')"
+            alt="KD-Service: technische Zeichnungen, CAD-Konstruktion und 3D-Druck"
+          />
+          <span class="hero-photo-caption">KD-SERVICE <span>·</span> KONSTRUKTION & 3D-DRUCK</span>
         </div>
-        <div class="hero-meta">
-          <span><span class="meta-icon">⌖</span> Deutschlandweit digital</span>
-          <span class="meta-divider"></span>
-          <span>Faire Festpreise nach Projektbesprechung</span>
+        <div class="hero-bottom"><span>2D & 3D · TECHNISCHE ZEICHNUNGEN · 3D-DRUCK</span><span>VON DER SKIZZE ZUM MODELL</span></div>
+      </section>
+
+      <section id="cad-leistungen" class="offers section-wrap cad-offers">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">KONSTRUKTION, DIE WEITERDENKT</p>
+            <h2>Von der Skizze bis<br />zum <span>fertigen Modell.</span></h2>
+          </div>
+          <p class="section-intro">Ob einzelne Anpassung oder vollständige Ausarbeitung – ich unterstütze Privatpersonen, Handwerk und Unternehmen bei ihrem Konstruktionsprojekt.</p>
         </div>
-      </div>
-      <div class="hero-art cad-hero-art">
-        <img
-          class="hero-photo"
-          :src="imageUrl('76a791f3-9bc3-4c2b-9a71-4e0093cf7417.avif')"
-          alt="KD-Service: technische Zeichnungen, CAD-Konstruktion und 3D-Druck"
-        />
-        <span class="hero-photo-caption">KD-SERVICE <span>·</span> KONSTRUKTION & 3D-DRUCK</span>
-      </div>
-      <div class="hero-bottom"><span>2D & 3D · TECHNISCHE ZEICHNUNGEN · 3D-DRUCK</span><span>VON DER SKIZZE ZUM MODELL</span></div>
-    </section>
-
-    <section id="cad-leistungen" class="offers section-wrap cad-offers">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">KONSTRUKTION, DIE WEITERDENKT</p>
-          <h2>Von der Skizze bis<br />zum <span>fertigen Modell.</span></h2>
+        <div class="cad-service-grid">
+          <article class="cad-service-card">
+            <span class="cad-service-number">01</span>
+            <h3>CAD & Konstruktion</h3>
+            <ul>
+              <li>2D- und 3D-Konstruktionen</li>
+              <li>Individuelle Bauteile und Sonderlösungen</li>
+              <li>Stahlbau-, Blech- und Maschinenbaukonstruktionen</li>
+              <li>Konstruktion von Dreh- und Frästeilen</li>
+              <li>Entwicklung nicht mehr erhältlicher Ersatzteile</li>
+              <li>Änderung und Optimierung vorhandener CAD-Dateien</li>
+            </ul>
+          </article>
+          <article class="cad-service-card">
+            <span class="cad-service-number">02</span>
+            <h3>Zeichnungen & Fertigung</h3>
+            <ul>
+              <li>Technische Zeichnungen und Fertigungszeichnungen</li>
+              <li>Schweißzeichnungen und Schweißbaugruppen</li>
+              <li>Blechabwicklungen für Laser- und Kantteile</li>
+              <li>Baugruppen, Stücklisten und Montagezeichnungen</li>
+              <li>Digitalisierung von Skizzen und alten Zeichnungen</li>
+              <li>Vermessung und Nachkonstruktion vorhandener Bauteile</li>
+            </ul>
+          </article>
+          <article class="cad-service-card">
+            <span class="cad-service-number">03</span>
+            <h3>Dateien & 3D-Druck</h3>
+            <ul>
+              <li>STEP / STP</li>
+              <li>STL und 3MF</li>
+              <li>DXF für Laser- und Kantteile</li>
+              <li>Weitere Formate nach Absprache</li>
+              <li>3D-Druck von Prototypen und Ersatzteilen</li>
+              <li>Kleinserien nach Projektabsprache</li>
+            </ul>
+          </article>
         </div>
-        <p class="section-intro">Ob einzelne Anpassung oder vollständige Ausarbeitung – ich unterstütze Privatpersonen, Handwerk und Unternehmen bei ihrem Konstruktionsprojekt.</p>
-      </div>
-      <div class="cad-service-grid">
-        <article class="cad-service-card">
-          <span class="cad-service-number">01</span>
-          <h3>CAD & Konstruktion</h3>
-          <ul>
-            <li>2D- und 3D-Konstruktionen</li>
-            <li>Individuelle Bauteile und Sonderlösungen</li>
-            <li>Stahlbau-, Blech- und Maschinenbaukonstruktionen</li>
-            <li>Konstruktion von Dreh- und Frästeilen</li>
-            <li>Entwicklung nicht mehr erhältlicher Ersatzteile</li>
-            <li>Änderung und Optimierung vorhandener CAD-Dateien</li>
-          </ul>
-        </article>
-        <article class="cad-service-card">
-          <span class="cad-service-number">02</span>
-          <h3>Zeichnungen & Fertigung</h3>
-          <ul>
-            <li>Technische Zeichnungen und Fertigungszeichnungen</li>
-            <li>Schweißzeichnungen und Schweißbaugruppen</li>
-            <li>Blechabwicklungen für Laser- und Kantteile</li>
-            <li>Baugruppen, Stücklisten und Montagezeichnungen</li>
-            <li>Digitalisierung von Skizzen und alten Zeichnungen</li>
-            <li>Vermessung und Nachkonstruktion vorhandener Bauteile</li>
-          </ul>
-        </article>
-        <article class="cad-service-card">
-          <span class="cad-service-number">03</span>
-          <h3>Dateien & 3D-Druck</h3>
-          <ul>
-            <li>STEP / STP</li>
-            <li>STL und 3MF</li>
-            <li>DXF für Laser- und Kantteile</li>
-            <li>Weitere Formate nach Absprache</li>
-            <li>3D-Druck von Prototypen und Ersatzteilen</li>
-            <li>Kleinserien nach Projektabsprache</li>
-          </ul>
-        </article>
-      </div>
-    </section>
+      </section>
 
-    <section class="cad-experience">
-      <div class="cad-experience-inner">
-        <div>
-          <p class="eyebrow">PRAXISNAHES ENGINEERING</p>
-          <h2>Technik verstehen.<br /><span>Lösungen gestalten.</span></h2>
+      <section class="cad-experience">
+        <div class="cad-experience-inner">
+          <div>
+            <p class="eyebrow">PRAXISNAHES ENGINEERING</p>
+            <h2>Technik verstehen.<br /><span>Lösungen gestalten.</span></h2>
+          </div>
+          <div class="cad-experience-copy">
+            <p>Erfahrung aus Maschinenbau, Sonderfahrzeugbau, Stahlbau und Landtechnik fließt in jedes Projekt ein – für Lösungen, die nicht nur auf dem Bildschirm funktionieren.</p>
+            <div class="cad-tags"><span>Maschinenbau</span><span>Sonderfahrzeugbau</span><span>Stahlbau</span><span>Landtechnik</span></div>
+          </div>
         </div>
-        <div class="cad-experience-copy">
-          <p>Erfahrung aus Maschinenbau, Sonderfahrzeugbau, Stahlbau und Landtechnik fließt in jedes Projekt ein – für Lösungen, die nicht nur auf dem Bildschirm funktionieren.</p>
-          <div class="cad-tags"><span>Maschinenbau</span><span>Sonderfahrzeugbau</span><span>Stahlbau</span><span>Landtechnik</span></div>
+      </section>
+
+      <section id="cad-ablauf" class="how section-wrap cad-how">
+        <div class="section-heading">
+          <div><p class="eyebrow">EINFACH & TRANSPARENT</p><h2>Dein Projekt.<br />Drei klare <span>Schritte.</span></h2></div>
         </div>
-      </div>
-    </section>
+        <div class="steps">
+          <article class="step"><span class="step-number">01</span><h3>Idee teilen</h3><p>Melde dich mit deiner Idee, Skizze, Zeichnung oder vorhandenen Datei – auch ein erstes Gespräch ist unverbindlich.</p></article>
+          <article class="step"><span class="step-number">02</span><h3>Lösung abstimmen</h3><p>Wir besprechen Anforderungen, gewünschte Ergebnisse und den passenden Leistungsumfang. Du erhältst einen fairen Festpreis vorab.</p></article>
+          <article class="step"><span class="step-number">03</span><h3>Ergebnis erhalten</h3><p>Die Zusammenarbeit läuft deutschlandweit digital. Aufmaße vor Ort oder die Zusendung von Bauteilen sind nach Absprache möglich.</p></article>
+        </div>
+      </section>
 
-    <section id="cad-ablauf" class="how section-wrap cad-how">
-      <div class="section-heading">
-        <div><p class="eyebrow">EINFACH & TRANSPARENT</p><h2>Dein Projekt.<br />Drei klare <span>Schritte.</span></h2></div>
-      </div>
-      <div class="steps">
-        <article class="step"><span class="step-number">01</span><h3>Idee teilen</h3><p>Melde dich mit deiner Idee, Skizze, Zeichnung oder vorhandenen Datei – auch ein erstes Gespräch ist unverbindlich.</p></article>
-        <article class="step"><span class="step-number">02</span><h3>Lösung abstimmen</h3><p>Wir besprechen Anforderungen, gewünschte Ergebnisse und den passenden Leistungsumfang. Du erhältst einen fairen Festpreis vorab.</p></article>
-        <article class="step"><span class="step-number">03</span><h3>Ergebnis erhalten</h3><p>Die Zusammenarbeit läuft deutschlandweit digital. Aufmaße vor Ort oder die Zusendung von Bauteilen sind nach Absprache möglich.</p></article>
-      </div>
-    </section>
+      <section class="contact cad-contact">
+        <div class="contact-copy">
+          <p class="eyebrow">DEINE IDEE IST DER ANFANG</p>
+          <h2>Was möchtest<br />du <span>konstruieren?</span></h2>
+          <p>Schick mir deine Skizze, Zeichnung oder vorhandene Datei. Gemeinsam finden wir die passende Lösung.</p>
+          <a class="button button-dark" :href="cadContactUrl" target="_blank" rel="noreferrer">CAD-Projekt anfragen <span aria-hidden="true">↗</span></a>
+        </div>
+        <aside class="contact-aside cad-contact-aside" aria-label="Impressum">
+          <span class="contact-star" aria-hidden="true">⌘</span>
+          <p><strong>Impressum</strong></p>
+          <p>
+            KD-Service<br />
+            Inhaber: Daniel Abend<br />
+            Wilhelm-Hardebeck-Straße 5<br />
+            49577 Ankum
+          </p>
+          <p>
+            <strong>Kontakt:</strong><br />
+            Telefon: <a href="tel:+4917673578046">+49 (0) 176 73578046</a><br />
+            E-Mail: <a href="mailto:kd.service.ankum@gmail.com">kd.service.ankum@gmail.com</a>
+          </p>
+          <p>
+            <strong>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:</strong><br />
+            DE68084253174
+          </p>
+          <p>
+            <strong>Verantwortlich für den Inhalt gemäß § 18 Abs. 2 MStV:</strong><br />
+            Daniel Abend<br />
+            Wilhelm-Hardebeck-Straße 5<br />
+            49577 Ankum
+          </p>
+        </aside>
+      </section>
+    </main>
 
-    <section class="contact cad-contact">
-      <div class="contact-copy">
-        <p class="eyebrow">DEINE IDEE IST DER ANFANG</p>
-        <h2>Was möchtest<br />du <span>konstruieren?</span></h2>
-        <p>Schick mir deine Skizze, Zeichnung oder vorhandene Datei. Gemeinsam finden wir die passende Lösung.</p>
-        <a class="button button-dark" :href="cadContactUrl" target="_blank" rel="noreferrer">CAD-Projekt anfragen <span aria-hidden="true">↗</span></a>
-      </div>
-      <div class="contact-aside cad-contact-aside">
-        <span class="contact-star" aria-hidden="true">⌘</span>
-        <p>KD-SERVICE<br /><strong>KONSTRUKTION & 3D-DRUCK</strong></p>
-        <span class="contact-pin">Deutschlandweit digital</span>
-      </div>
-    </section>
-  </main>
+    <main v-else>
+      <section id="start" class="hero">
+        <div class="hero-content">
+          <p class="eyebrow"><span class="status-dot"></span> EVENTVERLEIH AUS ANKUM</p>
+          <h1>Dein Event.<br />Dein <span>Highlight.</span></h1>
+          <p class="hero-copy">
+            Von sattem Sound bis zum Kick am Automaten – miete unkompliziert das Extra, das deine Feier unvergesslich macht.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#angebote">Angebote entdecken <span aria-hidden="true">↓</span></a>
+            <a class="text-link" :href="contactUrl" target="_blank" rel="noreferrer">Jetzt unverbindlich anfragen <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-meta">
+            <span><span class="meta-icon">⌖</span> 49577 Ankum</span>
+            <span class="meta-divider"></span>
+            <span>Abholung oder Lieferung nach Absprache</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <img
+            class="hero-photo"
+            :src="imageUrl('0294326f-6b58-4165-a352-08ef9a07de8f.avif')"
+            alt=""
+          />
+          <span class="hero-photo-caption">KD-Service <span>·</span> EVENTVERLEIH IN ANKUM</span>
+        </div>
+        <div class="hero-bottom"><span>GEBURTSTAG · HOCHZEIT · FIRMENFEIER · MEHR</span><span>SCROLLEN & ENTDECKEN ↓</span></div>
+      </section>
 
-  <footer class="site-footer">
-    <span v-if="activeService === 'event'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> EVENTVERLEIH </span></span></span>
-    <span v-else class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> KONSTRUKTION · 3D-DRUCK</span></span></span>
-    <p v-if="activeService === 'event'">Eventverleih für unvergessliche Feiern.</p>
-    <p v-else>Konstruktion, technische Zeichnungen & 3D-Druck.</p>
-    <a href="#start">Zurück nach oben ↑</a>
-    <span v-if="activeService === 'event'" class="copyright">© {{ new Date().getFullYear() }} KD-Service</span>
-    <span v-else class="copyright">© {{ new Date().getFullYear() }} KD-SERVICE</span>
-  </footer>
+      <section id="angebote" class="offers section-wrap">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MACH DEIN EVENT BESONDERS</p>
+            <h2>Das kannst du <span>mieten.</span></h2>
+          </div>
+          <p class="section-intro">Für kleine Runden und große Feiern. Such dir dein Highlight aus – den Rest besprechen wir persönlich.</p>
+        </div>
+
+        <div class="product-grid">
+          <article
+            v-for="product in products"
+            :key="product.id"
+            class="product-card"
+          >
+            <a
+              class="product-photo"
+              :href="product.link"
+              target="_blank"
+              rel="noreferrer"
+              :aria-label="`${product.title} auf Kleinanzeigen ansehen`"
+            >
+              <img :src="imageUrl(product.image)" :alt="product.imageAlt" loading="lazy" />
+              <span class="product-number">{{ product.number }}</span>
+              <span class="product-category">{{ product.category }}</span>
+            </a>
+            <div class="product-content">
+              <div class="product-title-row">
+                <div>
+                  <h3>{{ product.title }}</h3>
+                  <p v-if="product.subtitle" class="product-subtitle">{{ product.subtitle }}</p>
+                </div>
+                <div class="price"><strong>{{ product.price }} €</strong><span>{{ product.priceNote }}</span></div>
+              </div>
+              <p class="product-description">{{ product.description }}</p>
+              <ul class="product-details">
+                <li v-for="detail in product.details" :key="detail"><span aria-hidden="true">✓</span>{{ detail }}</li>
+              </ul>
+              <p v-if="product.weekend" class="weekend-prices">{{ product.weekend }}</p>
+              <p v-if="product.extra" class="product-extra">{{ product.extra }}</p>
+              <a class="product-link" :href="product.link" target="_blank" rel="noreferrer">
+                Verfügbarkeit anfragen <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        </div>
+        <p class="offer-note">Automatenpreise gelten pro Tag, sofern nicht anders angegeben. Veranstaltungstechnik auch einzeln mietbar – Einzelpreise auf Anfrage.</p>
+      </section>
+
+      <section class="occasion">
+        <div class="occasion-copy">
+          <p class="eyebrow">VON DER IDEE BIS ZUM EVENT</p>
+          <h2>Gute Feiern<br />bleiben <span>im Kopf.</span></h2>
+        </div>
+        <div class="occasion-content">
+          <p>Geburtstag, Hochzeit, JGA, Gartenparty, Schützenfest oder Firmenfeier – mit dem passenden Equipment wird aus einem schönen Tag ein echtes Erlebnis.</p>
+          <div class="occasion-tags">
+            <span>Geburtstage</span><span>Hochzeiten</span><span>JGA</span><span>Firmenfeiern</span><span>Vereinsfeste</span><span>… und mehr</span>
+          </div>
+        </div>
+        <span class="occasion-spark" aria-hidden="true">✳</span>
+      </section>
+
+      <section id="ablauf" class="how section-wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">GANZ OHNE KOMPLIZIERT</p><h2>In drei Schritten<br />zum <span>Highlight.</span></h2></div>
+        </div>
+        <div class="steps">
+          <article class="step"><span class="step-number">01</span><h3>Wunschartikel wählen</h3><p>Entdecke das passende Extra für deine Feier – einzelne Artikel oder gleich mehrere Automaten.</p></article>
+          <article class="step"><span class="step-number">02</span><h3>Termin anfragen</h3><p>Schreib uns über Kleinanzeigen mit deinem Datum und was du mieten möchtest.</p></article>
+          <article class="step"><span class="step-number">03</span><h3>Feier genießen</h3><p>Abholung in Ankum oder Lieferung nach Absprache und Entfernung – dann kann gefeiert werden.</p></article>
+        </div>
+      </section>
+
+      <section class="contact">
+        <div class="contact-copy">
+          <p class="eyebrow">DEIN TERMIN WARTET SCHON</p>
+          <h2>Bereit für<br />dein <span>Highlight?</span></h2>
+          <p>Frag deinen Wunschtermin ganz unverbindlich an. Wir freuen uns auf deine Nachricht!</p>
+          <a class="button button-dark" :href="contactUrl" target="_blank" rel="noreferrer">Nachricht über Kleinanzeigen <span aria-hidden="true">↗</span></a>
+        </div>
+        <aside class="contact-aside" aria-label="Impressum">
+          <span class="contact-star" aria-hidden="true">✳</span>
+          <p><strong>Impressum</strong></p>
+          <p>
+            KD-Service<br />
+            Inhaber: Daniel Abend<br />
+            Wilhelm-Hardebeck-Straße 5<br />
+            49577 Ankum
+          </p>
+          <p>
+            <strong>Kontakt:</strong><br />
+            Telefon: <a href="tel:+4917673578046">+49 (0) 176 73578046</a><br />
+            E-Mail: <a href="mailto:kd.service.ankum@gmail.com">kd.service.ankum@gmail.com</a>
+          </p>
+          <p>
+            <strong>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:</strong><br />
+            DE68084253174
+          </p>
+          <p>
+            <strong>Verantwortlich für den Inhalt gemäß § 18 Abs. 2 MStV:</strong><br />
+            Daniel Abend<br />
+            Wilhelm-Hardebeck-Straße 5<br />
+            49577 Ankum
+          </p>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span v-if="activeService === 'cad'" class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> KONSTRUKTION · 3D-DRUCK</span></span></span>
+      <span v-else class="brand footer-brand"><span class="brand-mark">KD<span>.</span></span><span class="brand-name">KD-SERVICE<span> EVENTVERLEIH </span></span></span>
+      <p v-if="activeService === 'cad'">Konstruktion, technische Zeichnungen & 3D-Druck.</p>
+      <p v-else>Eventverleih für unvergessliche Feiern.</p>
+      <a href="#start">Zurück nach oben ↑</a>
+      <span v-if="activeService === 'cad'" class="copyright">© {{ new Date().getFullYear() }} KD-SERVICE</span>
+      <span v-else class="copyright">© {{ new Date().getFullYear() }} KD-Service</span>
+    </footer>
   </div>
 </template>
