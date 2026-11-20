@@ -136,7 +136,7 @@ h1, h2, h3, p { margin-top: 0; }
 .contact-copy > p:not(.eyebrow) { max-width: 410px; margin-bottom: 23px; color: #46513a; font-size: 12px; line-height: 1.7; }
 .button-dark { background: var(--dark); color: white; }
 .button-dark:hover { background: #2a3628; }
-.contact-aside { position: relative; display: flex; flex-direction: column; justify-content: center; width: 270px; height: 235px; padding: 28px; background: #b7dd5d; }
+.contact-aside { position: relative; display: flex; flex-direction: column; justify-content: center; width: 270px; height: auto; padding: 28px; background: #b7dd5d; }
 .contact-star { position: absolute; right: 19px; top: 17px; color: #739637; font-size: 34px; }
 .contact-aside p { margin: 0 0 17px; color: #526638; font: 600 9px/1.8 'Space Grotesk', sans-serif; letter-spacing: 1.5px; }
 .contact-aside p strong { color: #1b2515; font-size: 12px; }
