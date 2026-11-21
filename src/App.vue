@@ -92,7 +92,7 @@ const products = [
     imageAlt: 'Kickautomat Super Kick für Kinder und Erwachsene',
     price: '50',
     priceNote: 'Mo–Do pro Tag',
-    weekend: 'Fr 120 € · Sa 120 € · So 120 € · Fr–So 250 €',
+    weekend: 'Fr 100 € · Sa 100 € · So 100 € · Fr–So 250 €',
     details: ['Für Kinder & Erwachsene', 'Abholung nach Absprache', 'Lieferung gegen Aufpreis möglich'],
     link: 'https://www.kleinanzeigen.de/s-anzeige/kickautomat-zur-huepfburg-geburtstag-firmenfeier-hochzeit-jga/3522649840-233-17095'
   },
